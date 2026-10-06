@@ -1,0 +1,24 @@
+# Python
+ai-server/.venv/
+ai-server/__pycache__/
+mock-core-service/.venv/
+mock-core-service/data/*.db
+**/*.pyc
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Java
+backend/build/
+backend/.gradle/
+
+# 환경변수 (절대 커밋 금지)
+.env
+.env.*
+!.env.example
+
+# 데이터/로그
+data/
+logs/
+*.db
