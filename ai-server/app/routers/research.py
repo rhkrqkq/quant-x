@@ -1,7 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from ..deps import verify_internal_key, require_user_id
 from ..schemas.research import ResearchRequest, JobStatus
-from ..services.job_store import job_store, run_dummy_research
+from ..agents.runner import run_agent_research
 from ..config import settings
 
 router = APIRouter(prefix="/ai", tags=["research"])
@@ -22,7 +22,7 @@ async def start_research(
             detail="Kill Switch is active",
         )
     job = job_store.create()
-    background.add_task(run_dummy_research, job.jobId, req.query)
+    background.add_task(run_agent_research, job.jobId, req.query, user_id, req.scope)
     return job
 
 

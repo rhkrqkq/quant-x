@@ -1,0 +1,41 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: quantx-backend
+  datasource:
+    url: jdbc:mariadb://localhost:3306/quantx?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate            # 운영: validate, 개발 시 update 가능
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+        format_sql: true
+        jdbc:
+          time_zone: Asia/Seoul
+    open-in-view: false
+    show-sql: false
+  jackson:
+    time-zone: Asia/Seoul
+
+quantx:
+  jwt:
+    secret: ${JWT_SECRET:CHANGE_ME_IN_PROD_PLEASE_USE_LONG_RANDOM_STRING_AT_LEAST_64_BYTES}
+    expire-minutes: 60
+    refresh-expire-days: 7
+  ai-server:
+    base-url: ${AI_SERVER_BASE_URL:http://localhost:8000}
+    api-key: ${AI_SERVER_API_KEY:changeme-internal-key}
+    timeout-seconds: 60
+
+logging:
+  level:
+    com.quantx: INFO
+    org.springframework.security: INFO
