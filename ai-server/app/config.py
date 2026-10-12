@@ -22,7 +22,10 @@ class Settings(BaseSettings):
 
     mariadb_url: str = "mysql+pymysql://root:root@localhost:3306/quantx?charset=utf8mb4"
 
-    agent_max_iterations: int = 5
+    agent_max_iterations: int = 1
     agent_timeout_seconds: int = 60
+
+    mock_core_base_url: str = "http://localhost:9000"
+    mock_core_api_key: str = "changeme-core-key"
 
 settings = Settings()

@@ -2,6 +2,8 @@
 from .gateway import gateway, ToolSpec
 from . import market_tools as mt
 from . import rag_tools as rt
+from . import compliance as cp
+from . import mock_core_client as mc   
 
 
 def register_default_tools() -> None:
@@ -34,4 +36,29 @@ def register_default_tools() -> None:
         func=rt.search_documents,
         required_scopes=["RAG_READ"],
         description="사내 리서치 문서 검색 (4장 RAG)",
+    ))
+    # register_default_tools() 마지막에 추가
+    gateway.register(ToolSpec(                     # ← 7장 추가
+        name="check_compliance_rules",
+        func=cp.check_compliance_rules,
+        required_scopes=["REPORT_READ"],
+        description="보고서 초안의 규정 위반 후보 검사",
+    ))
+    gateway.register(ToolSpec(
+    name="get_account",
+    func=mc.mock_core_client.get_account,
+    required_scopes=["ACCOUNT_READ"],
+    description="가상 계좌 정보 조회 (Core Zone)",
+    ))
+    gateway.register(ToolSpec(
+    name="get_balance",
+    func=mc.mock_core_client.get_balance,
+    required_scopes=["ACCOUNT_READ"],
+    description="가상 계좌 잔고 조회 (Core Zone)",
+    ))
+    gateway.register(ToolSpec(
+    name="list_orders",
+    func=mc.mock_core_client.list_orders,
+    required_scopes=["ACCOUNT_READ"],
+    description="주문 내역 조회 (Core Zone)",
     ))

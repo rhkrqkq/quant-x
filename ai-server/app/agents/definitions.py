@@ -22,7 +22,17 @@ MARKET_ANALYST = SingleAgent(
     description="시세·재무 지표를 조회해 해석한다",
 )
 
-AGENTS: Dict[str, SingleAgent] = {a.agent_id: a for a in (RESEARCH_AGENT, MARKET_ANALYST)}
+RISK_REVIEWER = SingleAgent(
+    agent_id="risk_reviewer",
+    # ChatPromptTemplate이 {} 를 치환 자리로 읽지 않도록 이중 이스케이프한다
+    system_prompt=prompts.RISK_REVIEWER_SYSTEM.replace("{", "{{").replace("}", "}}"),
+    tool_names=["search_documents"],
+    description="보고서 초안의 규정 위반과 근거 누락을 검토한다",
+)
+
+AGENTS: Dict[str, SingleAgent] = {
+    a.agent_id: a for a in (RESEARCH_AGENT, MARKET_ANALYST, RISK_REVIEWER)
+}
 
 
 def get_agent(agent_id: str) -> Optional[SingleAgent]:

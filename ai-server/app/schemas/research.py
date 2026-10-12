@@ -16,3 +16,4 @@ class JobStatus(BaseModel):
     progress: float = 0.0
     currentStep: Optional[str] = None
     result: Optional[Dict[str, Any]] = None
+    agentExecutions: List[Dict[str, Any]] = Field(default_factory=list)   # ← 7장 추가

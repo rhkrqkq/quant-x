@@ -14,3 +14,4 @@ unstructured>=0.15.0
 pypdf>=4.0.0
 sentence-transformers>=3.0.0   # BGE-M3 모델 본체
 datasets>=3.0.0                # HuggingFace 데이터셋
+langgraph>=1.0,<2.0

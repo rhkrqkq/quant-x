@@ -1,8 +1,10 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from ..deps import verify_internal_key, require_user_id
 from ..schemas.research import ResearchRequest, JobStatus
-from ..agents.runner import run_agent_research
+from ..services.job_store import job_store
 from ..config import settings
+from ..agents.runner import run_agent_research
+from ..graph.execution_store import list_executions          # ← 7장 추가
 
 router = APIRouter(prefix="/ai", tags=["research"])
 
@@ -22,7 +24,9 @@ async def start_research(
             detail="Kill Switch is active",
         )
     job = job_store.create()
-    background.add_task(run_agent_research, job.jobId, req.query, user_id, req.scope)
+    # 실행 이력에 남길 requestId를 다섯 번째 인자로 더한다      # ← 7장 추가
+    background.add_task(run_agent_research, job.jobId, req.query,
+                        user_id, req.scope, req.requestId)
     return job
 
 
@@ -34,4 +38,5 @@ async def get_job(job_id: str) -> JobStatus:
     job = job_store.get(job_id)
     if not job:
         raise HTTPException(status_code=404, detail="job not found")
+    job.agentExecutions = list_executions(job_id)             # ← 7장 추가
     return job
