@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Header
 
 from ..deps import verify_internal_key
 from ..tools.gateway import gateway
+from ..safety.context import set_request_uid
 
 router = APIRouter(prefix="/ai/tools", tags=["tools"])
 
@@ -25,7 +26,9 @@ def invoke_tool(
     payload: Dict[str, Any],
     x_user_id: str = Header(...),
     x_user_scopes: str = Header(default=""),
-    x_agent_id: str = Header(default="debug-agent"),):
+    x_agent_id: str = Header(default="debug-agent"), # ): 제거, 하단 두줄 추가
+    x_request_id: str = Header(default=""),):
+    set_request_uid(x_request_id or None)      # ← 9장: 기록이 같은 요청으로 묶이게
     scopes = [s.strip() for s in x_user_scopes.split(",") if s.strip()]
     try:
         result = gateway.invoke(

@@ -15,3 +15,5 @@ pypdf>=4.0.0
 sentence-transformers>=3.0.0   # BGE-M3 모델 본체
 datasets>=3.0.0                # HuggingFace 데이터셋
 langgraph>=1.0,<2.0
+SQLAlchemy>=2.0.0              # 5장 tools/db.py — langchain이 끌고 오지만 직접 쓰므로 명시한다
+PyMySQL>=1.1.0                 # MariaDB 드라이버. 없으면 감사 기록이 전부 실패한다
